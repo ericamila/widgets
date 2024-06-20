@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:teste_p/biometria.dart';
 import 'package:teste_p/dropdown_menu.dart';
 import 'package:teste_p/space.dart';
+import 'package:teste_p/tab_bar.dart';
 
+import 'animacoes_page.dart';
+import 'banco.dart';
+import 'crud_supabase.dart';
 import 'elevatedbutton_icon.dart';
+import 'flow_widget.dart';
 import 'navigation_bar.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(url: supabaseUrl, anonKey: anonKey);
+
   runApp(const MyApp());
 }
 
@@ -17,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
       home: const HomePage(),
@@ -56,11 +67,40 @@ class _HomePageState extends State<HomePage> {
               onPressed: onSpacer,
               child: const Text('Spacer'),
             ),
+            TextButton(
+              onPressed: onTabBar,
+              child: const Text('TabBar'),
+            ),
+            TextButton(
+              onPressed: onCRUDSupabase,
+              child: const Text('CRUD Supabase'),
+            ),
+            TextButton(
+              onPressed: onMudarCores,
+              child: const Text('Mudar Cores'),
+            ),
+            TextButton(
+              onPressed: () => open((_) => const Biometria()),
+              child: const Text('Biometria'),
+            ),
+            TextButton(
+              onPressed: () => open((_) => const AnimacoesPage()),
+              child: const Text('Animações'),
+            ),
+            TextButton(
+              onPressed: () => open((_) => const FlowWidgetPage()),
+              child: const Text('Flow Widget'),
+            ),
           ],
         ),
       ),
     );
   }
+
+  open(pagina) {
+    Navigator.push(context, MaterialPageRoute(builder: pagina));
+  }
+
 
   onDropdownMenu() {
     Navigator.push(
@@ -83,5 +123,32 @@ class _HomePageState extends State<HomePage> {
   onSpacer() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const SpacerPage()));
+  }
+
+  onTabBar() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const TabBarPage()));
+  }
+
+  onCRUDSupabase() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const CRUDSupabase()));
+  }
+
+  onMudarCores() {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarColor: Theme.of(context).primaryColor,
+          statusBarIconBrightness: Brightness.light,
+          statusBarBrightness: Brightness.light,
+          systemNavigationBarColor: Theme.of(context).primaryColor,
+          systemNavigationBarIconBrightness: Brightness.light
+        ),
+    );
+  }
+
+  onBiometria() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const Biometria()));
   }
 }
