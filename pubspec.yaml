@@ -40,6 +40,7 @@ dependencies:
   uuid: ^4.4.0
   local_auth: ^2.2.0
   lottie: ^3.1.2
+  flutter_animate: ^4.5.0
 
 dev_dependencies:
   flutter_test:
